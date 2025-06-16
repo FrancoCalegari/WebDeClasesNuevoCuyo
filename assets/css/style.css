@@ -1,3 +1,14 @@
+/* Paleta de colores */
+:root {
+    --primary-color: #224D6B;
+    --secondary-color: #282B2D;
+    --accent-color: #4B585D;
+    --background-color: #E9E9EA;
+    --text-color: #333;
+    --light: #ffffff;
+    --hover-color: #1a3c53;
+}
+
 /* Reset básico */
 * {
     margin: 0;
@@ -5,11 +16,15 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    background-color: #f9f9f9;
-    color: #333;
+    background-color: var(--background-color);
+    color: var(--text-color);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -17,8 +32,8 @@ body {
 
 /* Nav */
 nav {
-    background-color: #004d99;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--light);
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
@@ -40,9 +55,9 @@ nav .nav-buttons {
 }
 
 nav button {
-    background-color: #0066cc;
+    background-color: var(--accent-color);
     border: none;
-    color: white;
+    color: var(--light);
     padding: 0.5rem 1rem;
     border-radius: 4px;
     cursor: pointer;
@@ -51,7 +66,7 @@ nav button {
 }
 
 nav button:hover {
-    background-color: #004d99;
+    background-color: var(--hover-color);
 }
 
 /* Sections generales */
@@ -65,17 +80,16 @@ main {
 
 section {
     margin-bottom: 3rem;
-    background-color: white;
+    background-color: var(--light);
     padding: 1.8rem 2rem;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Presentación */
 #presentacion h2,
 #carreras h2,
 #info-creator h2 {
-    color: #004d99;
+    color: var(--primary-color);
     margin-bottom: 1rem;
 }
 
@@ -85,8 +99,8 @@ section {
 }
 
 .ano h3 {
-    background-color: #0066cc;
-    color: white;
+    background-color: var(--accent-color);
+    color: var(--light);
     padding: 0.4rem 1rem;
     border-radius: 6px;
     margin-bottom: 0.8rem;
@@ -109,7 +123,7 @@ ul.materias li {
 
 /* Footer */
 footer {
-    background-color: #222;
+    background-color: var(--secondary-color);
     color: #eee;
     padding: 1rem 2rem;
     text-align: center;
@@ -117,7 +131,7 @@ footer {
 }
 
 footer a {
-    color: #4da6ff;
+    color: var(--accent-color);
     text-decoration: none;
     margin: 0 0.3rem;
 }
@@ -132,10 +146,12 @@ footer a:hover {
         flex-direction: column;
         gap: 0.8rem;
     }
+
     nav .nav-buttons {
         justify-content: center;
         flex-wrap: wrap;
     }
+
     main {
         padding: 1rem;
     }
@@ -150,16 +166,22 @@ footer a:hover {
 }
 
 .clase {
-    background-color: white;
-    border-left: 6px solid #007acc;
+    background-color: var(--light);
+    border-left: 6px solid var(--primary-color);
     padding: 1rem 1.5rem;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: 500ms all;
+}
+
+.clase:hover{
+    scale: 1.02;
+    transition: 500ms all;
 }
 
 .clase h2 {
     margin-bottom: 0.5rem;
-    color: #007acc;
+    color: var(--primary-color);
 }
 
 .clase p {
@@ -167,10 +189,26 @@ footer a:hover {
 }
 
 .clase a {
-    color: #007acc;
+    color: var(--primary-color);
     text-decoration: none;
 }
 
 .clase a:hover {
     text-decoration: underline;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.clase.hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.clase.fade-in {
+  animation: fadeIn 0.6s forwards;
 }

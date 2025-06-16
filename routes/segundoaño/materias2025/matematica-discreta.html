@@ -8,11 +8,18 @@
 </head>
 <body>
   <header>
-    
+        <nav>
+        <div class="logo">Tecnicatura Nuevo Cuyo</div>
+        <div class="nav-buttons">
+            <button onclick="window.location.href='../../../index.html#presentacion'">Inicio</button>
+            <button onclick="window.location.href='../../../index.html#carreras'">Carrera</button>
+            <button onclick="window.location.href='../../../index.html#info-creator'">Acerca</button>
+        </div>
+    </nav>
   </header>
 
   <main>
-    <h1>Clases de Matematica Discreta</h1>
+    <h2>Clases de Matematica Discreta</h2>
     <section id="lista-clases" class="clases-container">
       <!-- Las clases se cargarán aquí dinámicamente -->
     </section>
@@ -22,30 +29,44 @@
     <p>Franco Calegari &copy; 2025 - Tecnicatura en Desarrollo de Software</p>
   </footer>
 
-  <script>
-    fetch("clases-discreta.json")
-        .then(response => response.json())
-        .then(clases => {
-            const contenedor = document.getElementById("lista-clases");
-            clases.forEach(clase => {
-            const div = document.createElement("div");
-            div.classList.add("clase");
+<script>
+  fetch("clases-discreta.json")
+    .then(response => response.json())
+    .then(clases => {
+      const contenedor = document.getElementById("lista-clases");
 
-            div.innerHTML = `
-                <h2>Clase ${clase.numero}</h2>
-                <p><strong>Tema:</strong> ${clase.tema}</p>
-                <p><strong>Fecha:</strong> ${clase.fecha}</p>
-                <p><a href="${clase.video}" target="_blank">Ver video</a></p>
-                ${clase.resumen ? `<p><a href="${clase.resumen}" target="_blank">Ver resumen</a></p>` : ""}
-            `;
+      clases.forEach(clase => {
+        const div = document.createElement("div");
+        div.classList.add("clase", "hidden");
 
-            contenedor.appendChild(div);
-            });
-        })
-        .catch(error => {
-            console.error("Error al cargar las clases:", error);
+        div.innerHTML = `
+          <h2>Clase ${clase.numero}</h2>
+          <p><strong>Tema:</strong> ${clase.tema}</p>
+          <p><strong>Fecha:</strong> ${clase.fecha}</p>
+          <p><a href="${clase.video}" target="_blank">Ver video</a></p>
+          ${clase.resumen ? `<p><a href="${clase.resumen}" target="_blank">Ver resumen</a></p>` : ""}
+        `;
+
+        contenedor.appendChild(div);
+      });
+
+      // Fade-in observer
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove("hidden");
+            entry.target.classList.add("fade-in");
+            observer.unobserve(entry.target); // solo una vez
+          }
         });
+      }, { threshold: 0.1 });
 
-  </script>
+      document.querySelectorAll('.clase').forEach(el => observer.observe(el));
+    })
+    .catch(error => {
+      console.error("Error al cargar las clases:", error);
+    });
+</script>
+
 </body>
 </html>
