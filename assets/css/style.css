@@ -1,0 +1,176 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background-color: #f9f9f9;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Nav */
+nav {
+    background-color: #004d99;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+nav .logo {
+    font-weight: bold;
+    font-size: 1.4rem;
+    letter-spacing: 1.2px;
+}
+
+nav .nav-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+nav button {
+    background-color: #0066cc;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+nav button:hover {
+    background-color: #004d99;
+}
+
+/* Sections generales */
+main {
+    flex: 1;
+    padding: 2rem;
+    max-width: 960px;
+    margin: 0 auto;
+    width: 90%;
+}
+
+section {
+    margin-bottom: 3rem;
+    background-color: white;
+    padding: 1.8rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Presentación */
+#presentacion h2,
+#carreras h2,
+#info-creator h2 {
+    color: #004d99;
+    margin-bottom: 1rem;
+}
+
+/* Años y materias */
+.ano {
+    margin-bottom: 1.5rem;
+}
+
+.ano h3 {
+    background-color: #0066cc;
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 0.8rem;
+}
+
+ul.materias {
+    list-style-type: square;
+    padding-left: 1.5rem;
+}
+
+ul.materias li {
+    margin-bottom: 0.4rem;
+}
+
+/* Info creador */
+#info-creator p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+/* Footer */
+footer {
+    background-color: #222;
+    color: #eee;
+    padding: 1rem 2rem;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+footer a {
+    color: #4da6ff;
+    text-decoration: none;
+    margin: 0 0.3rem;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    nav {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    nav .nav-buttons {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    main {
+        padding: 1rem;
+    }
+}
+
+/* Clases individuales */
+.clases-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 2rem 0;
+}
+
+.clase {
+    background-color: white;
+    border-left: 6px solid #007acc;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.clase h2 {
+    margin-bottom: 0.5rem;
+    color: #007acc;
+}
+
+.clase p {
+    margin-bottom: 0.3rem;
+}
+
+.clase a {
+    color: #007acc;
+    text-decoration: none;
+}
+
+.clase a:hover {
+    text-decoration: underline;
+}

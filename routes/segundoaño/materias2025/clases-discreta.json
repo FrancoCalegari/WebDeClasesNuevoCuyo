@@ -1,0 +1,71 @@
+[
+  {
+    "numero": 1,
+    "tema": "Introuccion a Matematica discreta, sistema de numeracion",
+    "fecha": "2024-03-20",
+    "video": "https://youtu.be/5qkf5X_wH1Q",
+    "resumen": ""
+  },
+  {
+    "numero": 2,
+    "tema": "Aritmética Modular",
+    "fecha": "2024-03-27",
+    "video": "https://youtu.be/mbGML9ghpNo"
+  },
+  {
+    "numero": 3,
+    "tema": "Introducción a la Aritmética Modular",
+    "fecha": "2024-04-03",
+    "video": "https://youtu.be/BL73gAkX2d8",
+    "resumen": ""
+  },
+    {
+    "numero": 4,
+    "tema": "Introducción a la Aritmética Modular",
+    "fecha": "2024-04-10",
+    "video": "https://youtu.be/R-E6OpAQJy4",
+    "resumen": ""
+  },
+  {
+    "numero": 5,
+    "tema": "Introducción a la Aritmética Modular",
+    "fecha": "2024-04-24",
+    "video": "https://youtu.be/kz04rr3oynk",
+    "resumen": ""
+  },
+  {
+    "numero": 6,
+    "tema": "Introducción a la Aritmética Modular",
+    "fecha": "2024-05-08",
+    "video": "https://youtu.be/C41vwGMe6zc",
+    "resumen": ""
+  },
+   {
+    "numero": 7,
+    "tema": "Introducción a la Aritmética Modular",
+    "fecha": "2024-05-15",
+    "video": "https://youtu.be/nlKxteFqpfs",
+    "resumen": ""
+  },
+  {
+    "numero": 8,
+    "tema": "Introducción a la Aritmética Modular",
+    "fecha": "2024-05-29",
+    "video": "https://youtu.be/AiFZE-Uu4fA",
+    "resumen": ""
+  },
+  {
+    "numero": 9,
+    "tema": "Introducción a la Aritmética Modular",
+    "fecha": "2024-06-05",
+    "video": "https://youtu.be/sIoBvwcTEnQ",
+    "resumen": ""
+  },
+  {
+    "numero": 10,
+    "tema": "Introducción a la Aritmética Modular",
+    "fecha": "2024-06-12",
+    "video": "https://youtu.be/LXPselTJPsU",
+    "resumen": ""
+  }
+]

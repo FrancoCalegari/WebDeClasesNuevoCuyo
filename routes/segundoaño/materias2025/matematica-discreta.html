@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Matematica Discreta - Clases</title>
+  <link rel="stylesheet" href="/./././assets/css/style.css" />
+</head>
+<body>
+  <header>
+    
+  </header>
+
+  <main>
+    <h1>Clases de Matematica Discreta</h1>
+    <section id="lista-clases" class="clases-container">
+      <!-- Las clases se cargarán aquí dinámicamente -->
+    </section>
+  </main>
+
+  <footer>
+    <p>Franco Calegari &copy; 2025 - Tecnicatura en Desarrollo de Software</p>
+  </footer>
+
+  <script>
+    fetch("clases-discreta.json")
+        .then(response => response.json())
+        .then(clases => {
+            const contenedor = document.getElementById("lista-clases");
+            clases.forEach(clase => {
+            const div = document.createElement("div");
+            div.classList.add("clase");
+
+            div.innerHTML = `
+                <h2>Clase ${clase.numero}</h2>
+                <p><strong>Tema:</strong> ${clase.tema}</p>
+                <p><strong>Fecha:</strong> ${clase.fecha}</p>
+                <p><a href="${clase.video}" target="_blank">Ver video</a></p>
+                ${clase.resumen ? `<p><a href="${clase.resumen}" target="_blank">Ver resumen</a></p>` : ""}
+            `;
+
+            contenedor.appendChild(div);
+            });
+        })
+        .catch(error => {
+            console.error("Error al cargar las clases:", error);
+        });
+
+  </script>
+</body>
+</html>
