@@ -269,3 +269,11 @@ footer a:hover {
 .app-link.xls .app-name h3 {
   color: #2e7d32;
 }
+
+
+li.desactivado a {
+  pointer-events: none;         /* Evita clics */
+  opacity: 0.6;                 /* Se ve más tenue */
+  text-decoration: line-through; /* Opcional: tachado */
+  cursor: not-allowed;         /* Cursor de prohibido */
+}
