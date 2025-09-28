@@ -1,0 +1,30 @@
+{
+  "name": "webdeclasesnuevocuyo",
+  "version": "1.0.0",
+  "description": "web de clases demo",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FrancoCalegari/WebDeClasesNuevoCuyo.git"
+  },
+  "keywords": [
+    "clases",
+    "FrancoCalegari"
+  ],
+  "author": "Franco Calegari",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FrancoCalegari/WebDeClasesNuevoCuyo/issues"
+  },
+  "homepage": "https://github.com/FrancoCalegari/WebDeClasesNuevoCuyo#readme",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "nodemon": "^3.1.10"
+  }
+}

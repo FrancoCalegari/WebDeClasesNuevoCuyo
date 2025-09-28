@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+  <%- include('layouts/head', { title: "Inicio - Tecnicatura Nuevo Cuyo" }) %>
+  <body>
+    <%- include('layouts/header') %>
+
+    <main>
+      <section id="presentacion">
+        <h2>Bienvenido al Recopilado de Clases de Programación</h2>
+        <p>Esta web reúne y organiza los links y recursos...</p>
+      </section>
+
+      <section id="carreras">
+        <h2>Años y Materias de la Tecnicatura</h2>
+
+        <% entradas.forEach(anio => { %>
+          <div class="ano">
+            <h3><%= anio.anio %></h3>
+            <ul class="materias">
+              <% anio.materias.forEach(m => { %>
+                <li class="<%= m.activo ? '' : 'desactivado' %>">
+                  <% if (m.activo) { %>
+                    <a href="/<%= m.ruta %>"><%= m.nombre %></a>
+                  <% } else { %>
+                    <span><%= m.nombre %></span>
+                  <% } %>
+                </li>
+              <% }) %>
+            </ul>
+          </div>
+        <% }) %>
+      </section>
+
+      <section id="info-creator">
+        <h2>Sobre el creador de la web</h2>
+        <p>Esta página fue creada por Franco Calegari con el propósito de recopilar los links de las clases de la Tecnicatura Nuevo Cuyo en Desarrollo de Software, para tener todo más organizado y de fácil acceso.</p>
+      </section>
+    </main>
+
+    <%- include('layouts/footer') %>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+  <%- include("../layouts/head", { title: webData.titulo }); %>
+  <body>
+    <%- include("../layouts/header"); %>
+
+    <main>
+      <section>
+        <h2><%= webData.titulo %></h2>
+        <div id="lista-clases" class="clases-container">
+          <% clases.forEach(clase => { %>
+            <div class="clase fade-in">
+              <h2>Clase <%= clase.numero %></h2>
+              <p><strong>Tema:</strong> <%= clase.tema %></p>
+              <p><strong>Fecha:</strong> <%= clase.fecha %></p>
+              <p><a href="<%= clase.video %>" target="_blank">Ver video</a></p>
+              <% if (clase.resumen) { %>
+                <p><a href="<%= clase.resumen %>" target="_blank">Ver resumen</a></p>
+              <% } %>
+            </div>
+          <% }) %>
+        </div>
+      </section>
+
+      <section id="recursos">
+        <h2>Resúmenes y Archivos del Profesor</h2>
+        <div class="app-folder">
+          <% recursos.forEach(r => { %>
+            <a href="<%= r.link %>" target="_blank" class="app-link <%= r.tipo %>">
+              <div class="app-logo">
+                <img src="/assets/imgs/archiveLogos/<%= r.icono %>" alt="<%= r.tipo %> icon" />
+              </div>
+              <div class="app-name">
+                <h3><%= r.nombre %></h3>
+              </div>
+            </a>
+          <% }) %>
+        </div>
+      </section>
+    </main>
+
+    <%- include("../layouts/footer"); %>
+  </body>
+</html>

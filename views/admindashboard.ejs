@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Admin Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h2, h3 { color: #224369; }
+    table { border-collapse: collapse; width: 100%; margin: 15px 0; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background: #f4f6f9; }
+    form { display: inline; }
+    .btn { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; }
+    .btn-edit { background: #4caf50; color: white; }
+    .btn-delete { background: #f44336; color: white; }
+    .btn-add { background: #2196f3; color: white; margin: 10px 0; display: inline-block; }
+  </style>
+</head>
+<body>
+  <h2>Bienvenido <%= user.username %></h2>
+  <p>Desde aquí podrás administrar las entradas (materias) y sus clases.</p>
+  <a href="/logout">Cerrar sesión</a>
+
+  <hr/>
+
+  <!-- Sección Entradas -->
+  <h3>Entradas (Años y Materias)</h3>
+  <% if (entradas && entradas.length > 0) { %>
+    <% entradas.forEach((anio, idx) => { %>
+      <h4><%= anio.anio %></h4>
+      <table>
+        <thead>
+          <tr>
+            <th>Materia</th>
+            <th>Ruta</th>
+            <th>Activo</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% anio.materias.forEach((m, i) => { %>
+            <tr>
+              <td><%= m.nombre %></td>
+              <td><%= m.ruta %></td>
+              <td><%= m.activo ? "Sí" : "No" %></td>
+              <td>
+                <!-- Editar materia -->
+                <form action="/admin/entrada/<%= idx %>/materia/<%= i %>/edit" method="POST">
+                  <input type="text" name="nombre" value="<%= m.nombre %>" required/>
+                  <input type="text" name="ruta" value="<%= m.ruta %>" required/>
+                  <select name="activo">
+                    <option value="true" <%= m.activo ? "selected" : "" %>>Activo</option>
+                    <option value="false" <%= !m.activo ? "selected" : "" %>>Inactivo</option>
+                  </select>
+                  <button class="btn btn-edit" type="submit">Guardar</button>
+                </form>
+
+                <!-- Eliminar materia -->
+                <form action="/admin/entrada/<%= idx %>/materia/<%= i %>/delete" method="POST" style="margin-left: 5px;">
+                  <button class="btn btn-delete" type="submit">Eliminar</button>
+                </form>
+
+                <!-- Editar clases de la materia -->
+                <a href="/admin/materia/<%= m.ruta %>">
+                  <button class="btn btn-add" type="button">Ver clases</button>
+                </a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+
+      <!-- Agregar nueva materia -->
+      <form action="/admin/entrada/<%= idx %>/materia/add" method="POST">
+        <input type="text" name="nombre" placeholder="Nombre materia" required/>
+        <input type="text" name="ruta" placeholder="Ruta archivo" required/>
+        <select name="activo">
+          <option value="true">Activo</option>
+          <option value="false">Inactivo</option>
+        </select>
+        <button class="btn btn-add" type="submit">Agregar Materia</button>
+      </form>
+    <% }) %>
+  <% } else { %>
+    <p>No hay entradas disponibles.</p>
+  <% } %>
+</body>
+</html>
