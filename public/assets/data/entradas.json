@@ -11,7 +11,14 @@
   },
   {
     "anio": "Segundo Año",
-    "materias": []
+    "materias": [
+      {
+        "nombre": "Matematica Discreta",
+        "slug": "matediscreta",
+        "ruta": "routes/segundo-ano/matediscreta/index.html",
+        "activo": true
+      }
+    ]
   },
   {
     "anio": "Tercer Año",

@@ -1,1 +1,25 @@
-{}
+{
+  "routes/segundo-ano/matediscreta/index.html": [
+    {
+      "numero": "1",
+      "tema": "Introuccion a Matematica discreta, sistema de numeracion",
+      "fecha": "2025-03-20",
+      "video": "https://youtu.be/5qkf5X_wH1Q",
+      "resumen": ""
+    },
+    {
+      "numero": "2",
+      "tema": "Unidad 1 - Aritmética Modular",
+      "fecha": "2025-03-27",
+      "video": "https://youtu.be/mbGML9ghpNo",
+      "resumen": ""
+    },
+    {
+      "numero": "3",
+      "tema": "Unidad 1 - Introducción a la Aritmética Modular",
+      "fecha": "2024-04-03",
+      "video": "https://youtu.be/BL73gAkX2d8",
+      "resumen": ""
+    }
+  ]
+}
