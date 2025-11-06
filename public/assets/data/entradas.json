@@ -11,12 +11,13 @@
   },
   {
     "anio": "Segundo Año",
-    "materias": [
-      {
-        "nombre": "Matemática Discreta",
-        "ruta": "materias/matematica-discreta.html",
-        "activo": true
-      }
-    ]
+    "materias": []
+  },
+  {
+    "materias": []
+  },
+  {
+    "anio": "2025",
+    "materias": []
   }
 ]
