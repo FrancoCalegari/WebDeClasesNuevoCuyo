@@ -7,6 +7,16 @@
   <link rel="stylesheet" href="/assets/css/admin.css"/>
 </head>
 <body class="admin-body">
+  <% function materiaSlug(m) {
+       if (m && m.slug) return m.slug;
+       const parts = (m && m.ruta ? m.ruta : "").split("/").filter(Boolean);
+       if (!parts.length) return "";
+       if (parts[parts.length - 1] === "index.html" && parts.length >= 2) {
+         return parts[parts.length - 2];
+       }
+       const last = parts[parts.length - 1] || "";
+       return last.replace(".html", "");
+     } %>
   <div class="admin-layout">
     <header class="admin-header">
       <div>
@@ -67,7 +77,7 @@
                             <div class="actions-group">
                               <form class="inline-form" action="/admin/entrada/<%= idx %>/materia/<%= i %>/edit" method="POST">
                                 <input class="input" type="text" name="nombre" value="<%= m.nombre %>" placeholder="Nombre" required/>
-                                <input class="input" type="text" name="slug" value="<%= (m.ruta || '').split('/').pop().replace('.html','') %>" placeholder="Slug (opcional)"/>
+                                <input class="input" type="text" name="slug" value="<%= materiaSlug(m) %>" placeholder="Slug (opcional)"/>
                                 <select class="input" name="activo">
                                   <option value="true" <%= m.activo ? "selected" : "" %>>Activo</option>
                                   <option value="false" <%= !m.activo ? "selected" : "" %>>Inactivo</option>

@@ -1,5 +1,4 @@
 const express = require("express");
-const fs = require("fs");
 const {
   getEntradas,
   saveEntradas,
@@ -8,12 +7,8 @@ const {
   readMateriaClases,
   readMateriaAdjuntos,
   syncMateriaStaticFiles,
-  getMateriaSlugFromRuta,
-  getMateriaHtmlPath,
-  getMateriaClasesFile,
-  getMateriaAdjuntosFile,
-  removeMateriaClasesEntry,
-  removeMateriaAdjuntosEntry,
+  deleteMateriaBundleAssets,
+  resolveMateriaBundle,
 } = require("../services/dataService");
 const { isAuthenticated } = require("../middlewares/auth");
 
@@ -66,32 +61,28 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/edit", (req, res) => {
   const slugPersonalizado = req.body.slug?.trim();
 
   if (nuevoNombre) {
-    const oldRuta = materia.ruta;
-    const oldSlug = getMateriaSlugFromRuta(oldRuta);
-    const clasesActuales = readMateriaClases(oldRuta);
-    const adjuntosActuales = readMateriaAdjuntos(oldRuta);
+    const oldBundle = resolveMateriaBundle({
+      ruta: materia.ruta,
+      slug: materia.slug,
+      anio: entrada.anio,
+    });
+    const clasesActuales = readMateriaClases(oldBundle.ruta, { slug: oldBundle.slug });
+    const adjuntosActuales = readMateriaAdjuntos(oldBundle.ruta, { slug: oldBundle.slug });
 
     const nuevoSlug = slugPersonalizado
       ? normalizeMateriaSlug(slugPersonalizado)
-      : normalizeMateriaSlug(nuevoNombre);
+      : materia.slug || normalizeMateriaSlug(nuevoNombre);
 
-    const nuevaRuta = buildMateriaRuta(nuevoSlug);
+    const nuevaRuta = buildMateriaRuta({ slug: nuevoSlug, anio: entrada.anio });
+    const rutaCambio = oldBundle.ruta !== nuevaRuta;
 
     materia.nombre = nuevoNombre;
+    materia.slug = nuevoSlug;
     materia.ruta = nuevaRuta;
     materia.activo = activo;
 
-    if (oldRuta !== nuevaRuta) {
-      const oldHtmlPath = getMateriaHtmlPath(oldRuta);
-      const oldClasesFile = getMateriaClasesFile(oldSlug);
-      const oldAdjuntosFile = getMateriaAdjuntosFile(oldSlug);
-
-      if (fs.existsSync(oldHtmlPath)) fs.unlinkSync(oldHtmlPath);
-      if (fs.existsSync(oldClasesFile)) fs.unlinkSync(oldClasesFile);
-      if (fs.existsSync(oldAdjuntosFile)) fs.unlinkSync(oldAdjuntosFile);
-
-      removeMateriaClasesEntry(oldRuta);
-      removeMateriaAdjuntosEntry(oldRuta);
+    if (rutaCambio) {
+      deleteMateriaBundleAssets(oldBundle);
     }
 
     syncMateriaStaticFiles(materia, {
@@ -99,9 +90,10 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/edit", (req, res) => {
       clases: clasesActuales,
       adjuntos: adjuntosActuales,
     });
+
+    saveEntradas(entradas);
   }
 
-  saveEntradas(entradas);
   res.redirect("/admin");
 });
 
@@ -110,18 +102,11 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/delete", (req, res) =>
   const { entradas, entrada, materia } = getContext(Number(entradaIndex), Number(materiaIndex));
 
   if (entrada && materia) {
-    const slug = getMateriaSlugFromRuta(materia.ruta);
-    const htmlPath = getMateriaHtmlPath(materia.ruta);
-    const clasesFile = getMateriaClasesFile(slug);
-    const adjuntosFile = getMateriaAdjuntosFile(slug);
-
-    if (fs.existsSync(htmlPath)) fs.unlinkSync(htmlPath);
-    if (fs.existsSync(clasesFile)) fs.unlinkSync(clasesFile);
-    if (fs.existsSync(adjuntosFile)) fs.unlinkSync(adjuntosFile);
-
-    removeMateriaClasesEntry(materia.ruta);
-    removeMateriaAdjuntosEntry(materia.ruta);
-
+    deleteMateriaBundleAssets({
+      ruta: materia.ruta,
+      slug: materia.slug,
+      anio: entrada.anio,
+    });
     entrada.materias.splice(materiaIndex, 1);
     saveEntradas(entradas);
   }
@@ -148,13 +133,13 @@ router.post("/entrada/:entradaIndex/materia/add", (req, res) => {
   const slug = slugPersonalizado
     ? normalizeMateriaSlug(slugPersonalizado)
     : normalizeMateriaSlug(nombre);
-  const ruta = buildMateriaRuta(slug);
+  const ruta = buildMateriaRuta({ slug, anio: entrada.anio });
 
-  const nuevaMateria = { nombre, ruta, activo };
+  const nuevaMateria = { nombre, slug, ruta, activo };
   entrada.materias.push(nuevaMateria);
-  saveEntradas(entradas);
 
   syncMateriaStaticFiles(nuevaMateria, { anio: entrada.anio, clases: [], adjuntos: [] });
+  saveEntradas(entradas);
 
   res.redirect("/admin");
 });
@@ -175,14 +160,14 @@ router.post("/entrada/add", (req, res) => {
     entradas.push(entrada);
   }
 
-  const slug = slugRaw ? normalizeMateriaSlug(slugRaw) : normalizeMateriaSlug(nombre);
-  const ruta = buildMateriaRuta(slug);
-  const nuevaMateria = { nombre: nombre.trim(), ruta, activo: true };
+  const cleanNombre = nombre.trim();
+  const slug = slugRaw ? normalizeMateriaSlug(slugRaw) : normalizeMateriaSlug(cleanNombre);
+  const ruta = buildMateriaRuta({ slug, anio });
+  const nuevaMateria = { nombre: cleanNombre, slug, ruta, activo: true };
 
   entrada.materias.push(nuevaMateria);
-  saveEntradas(entradas);
-
   syncMateriaStaticFiles(nuevaMateria, { anio, clases: [], adjuntos: [] });
+  saveEntradas(entradas);
 
   res.redirect("/admin");
 });
