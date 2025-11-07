@@ -16,8 +16,57 @@
   {
     "numero": "3",
     "tema": "Unidad 1 - Introducción a la Aritmética Modular",
-    "fecha": "2024-04-03",
+    "fecha": "2025-04-03",
     "video": "https://youtu.be/BL73gAkX2d8",
+    "resumen": ""
+  },
+  {
+    "numero": "4",
+    "tema": "Unidad 1 - Propiedad de suma modular",
+    "fecha": "2025-04-10",
+    "video": "https://youtu.be/R-E6OpAQJy4",
+    "resumen": ""
+  },
+  {
+    "numero": "5",
+    "tema": "Unidad 1 - Relacion de congruencia y base de conteo",
+    "fecha": "2025-04-24",
+    "video": "https://youtu.be/kz04rr3oynk",
+    "resumen": ""
+  },
+  {
+    "numero": "6",
+    "tema": "Unidad 1 - Sistema de numeracion base de conteo",
+    "fecha": "2025-05-08",
+    "video": "https://youtu.be/C41vwGMe6zc",
+    "resumen": ""
+  },
+  {
+    "numero": "7",
+    "tema": "Unidad 2 - Progresion Aritmetica, calculo de terminos n, distancia termino general",
+    "fecha": "2025-05-15",
+    "video": "https://youtu.be/nlKxteFqpfs",
+    "resumen": ""
+  },
+  {
+    "numero": "8",
+    "tema": "Unidad 2 - Progresion Aritmetica ejercitacion y repaso",
+    "fecha": "2025-05-29",
+    "video": "https://youtu.be/AiFZE-Uu4fA",
+    "resumen": ""
+  },
+  {
+    "numero": "9",
+    "tema": "Unidad 2 - Progresion Aritmetica, operaciones con progresiones aritmeticas(adiccion), suma de una progresion aritmetica",
+    "fecha": "2025-06-05",
+    "video": "https://youtu.be/sIoBvwcTEnQ",
+    "resumen": ""
+  },
+  {
+    "numero": "10",
+    "tema": "Unidad 2 - Suma de los primeros entoros positivos, pares positivos y impares positivos (casos particulares)",
+    "fecha": "2025-06-12",
+    "video": "https://youtu.be/LXPselTJPsU",
     "resumen": ""
   }
 ]

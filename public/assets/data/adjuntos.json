@@ -1,3 +1,36 @@
 {
-  "routes/segundo-ano/matediscreta/index.html": []
+  "routes/segundo-ano/matediscreta/index.html": [
+    {
+      "nombre": "Introduccion a matematica discreta 2025.pdf",
+      "ruta": "https://drive.google.com/file/d/1MsQZNDu4SBvFb1hnQ0Y5EQQolK1rKA98/view?usp=sharing"
+    },
+    {
+      "nombre": "Matematica discreta 2025 UNIDAD 1 y 2.pdf",
+      "ruta": "https://drive.google.com/file/d/1iw6xDSoy6qCa5y_LO3JjoFs676cTAqah/view?usp=sharing"
+    },
+    {
+      "nombre": "Progrecion aridmetica 2025",
+      "ruta": "https://drive.google.com/file/d/1K89-PPuvd4993kq0MfnoExGk68cN7HLQ/view?usp=sharing"
+    },
+    {
+      "nombre": "Suceccion de fibonachi 2025",
+      "ruta": "https://drive.google.com/file/d/1tgHwplh7XgRrwm-EBsWX5gCC1Mzpjmn9/view?usp=sharing"
+    },
+    {
+      "nombre": "Principio de Dirichlet 2025",
+      "ruta": "https://drive.google.com/file/d/1Nkqf2PTCBodkn3scx1twCtXE5_9wfp3X/view?usp=sharing"
+    },
+    {
+      "nombre": "Resumen de matmatica discreta.docx",
+      "ruta": "https://docs.google.com/document/d/1I2XSM9i8IRH9JIlFgIvRH_Q4Un-0o5AcUh-zhEQ3pM0/edit?usp=sharing"
+    },
+    {
+      "nombre": "Ejercitacion de practica profe franco.docx",
+      "ruta": "https://docs.google.com/document/d/1cadHq7jpvOQ0SUvBaEruujviUGat5MODthDeeBzyq_A/edit?usp=sharing"
+    },
+    {
+      "nombre": "Ejercitacion de prueba profe maidana clase 26/07/25.docx",
+      "ruta": "https://docs.google.com/document/d/1fDg-LCr_iiD-YxenGs9Sbe8o4lLD2FF-6Pjx34TakCQ/edit?usp=sharing"
+    }
+  ]
 }
