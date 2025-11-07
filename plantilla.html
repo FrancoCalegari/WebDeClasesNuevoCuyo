@@ -81,16 +81,29 @@
       .then(adjuntos => {
         const contenedor = document.getElementById("lista-adjuntos");
         adjuntos.forEach(a => {
+          const nombre = a.nombre || "";
+          const extension = nombre.toLowerCase().match(/\.(pdf|docx?|)$/)?.[1] || "";
+          let icon = "doclogo.png";
+          let linkClass = "doc";
+          
+          if (extension === "pdf") {
+            icon = "pdf.png";
+            linkClass = "pdf";
+          } else if (extension === "doc" || extension === "docx") {
+            icon = "doclogo.png";
+            linkClass = "doc";
+          }
+
           const aEl = document.createElement("a");
           aEl.href = a.ruta;
           aEl.target = "_blank";
-          aEl.className = "app-link " + (a.ruta.endsWith(".pdf") ? "pdf" : "doc");
+          aEl.className = `app-link ${linkClass}`;
           aEl.innerHTML = `
             <div class="app-logo">
-              <img src="../../../assets/imgs/archiveLogos/${a.ruta.endsWith(".pdf") ? "pdf.png" : "doclogo.png"}" alt="icono"/>
+              <img src="../../../assets/imgs/archiveLogos/${icon}" alt="icono"/>
             </div>
             <div class="app-name">
-              <h3>${a.nombre}</h3>
+              <h3>${nombre}</h3>
             </div>
           `;
           contenedor.appendChild(aEl);

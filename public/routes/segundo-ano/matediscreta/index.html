@@ -81,16 +81,23 @@
       .then(adjuntos => {
         const contenedor = document.getElementById("lista-adjuntos");
         adjuntos.forEach(a => {
+          const nombre = a.nombre || "";
+          const extension = nombre.split(".").pop().toLowerCase();
+          const isPdf = extension === "pdf";
+          const isWord = extension === "doc" || extension === "docx";
+          const icon = isPdf ? "pdf.png" : isWord ? "doclogo.png" : "doclogo.png";
+          const linkClass = isPdf ? "pdf" : isWord ? "doc" : "doc";
+
           const aEl = document.createElement("a");
           aEl.href = a.ruta;
           aEl.target = "_blank";
-          aEl.className = "app-link " + (a.ruta.endsWith(".pdf") ? "pdf" : "doc");
+          aEl.className = `app-link ${linkClass}`;
           aEl.innerHTML = `
             <div class="app-logo">
-              <img src="../../../assets/imgs/archiveLogos/${a.ruta.endsWith(".pdf") ? "pdf.png" : "doclogo.png"}" alt="icono"/>
+              <img src="../../../assets/imgs/archiveLogos/${icon}" alt="icono"/>
             </div>
             <div class="app-name">
-              <h3>${a.nombre}</h3>
+              <h3>${nombre}</h3>
             </div>
           `;
           contenedor.appendChild(aEl);
