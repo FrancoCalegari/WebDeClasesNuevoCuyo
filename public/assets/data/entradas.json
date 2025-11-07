@@ -1,13 +1,7 @@
 [
   {
     "anio": "Primer Año",
-    "materias": [
-      {
-        "nombre": "Programación 1",
-        "ruta": "materias/programacion1.html",
-        "activo": true
-      }
-    ]
+    "materias": []
   },
   {
     "anio": "Segundo Año",
