@@ -323,6 +323,88 @@ nav button:hover {
 .app-link.doc .app-name h3 { color: #1976d2; }
 .app-link.xls .app-name h3 { color: #2e7d32; }
 
+/* ---------- Login ---------- */
+.login-shell {
+  width: min(640px, 90vw);
+  margin: 3rem auto 5rem;
+  min-height: 60vh;
+  display: grid;
+  place-items: center;
+}
+
+.login-card {
+  width: 100%;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 2.4rem;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.login-card h2 {
+  margin-bottom: 0.35rem;
+}
+
+.login-subtitle {
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+
+.login-form {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.login-field input {
+  width: 100%;
+  padding: 0.8rem 0.9rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: var(--surface-muted);
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.login-field input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(31, 76, 255, 0.15);
+  background: #fff;
+}
+
+.login-error {
+  color: #d32f2f;
+  background: rgba(211, 47, 47, 0.08);
+  border: 1px solid rgba(211, 47, 47, 0.28);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 0.85rem;
+  font-weight: 600;
+}
+
+.login-form .btn {
+  justify-self: flex-start;
+  border: none;
+  border-radius: 999px;
+  padding: 0.8rem 1.4rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(120deg, var(--primary), #5b7bff);
+  box-shadow: 0 12px 28px rgba(31, 76, 255, 0.25);
+}
+
+.login-form .btn:hover {
+  transform: translateY(-1px);
+}
+
 /* ---------- Footer ---------- */
 footer {
   background: var(--secondary);
@@ -395,6 +477,10 @@ footer a:hover {
   .app-link {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .login-card {
+    padding: 1.8rem;
   }
 }
 @keyframes fadeIn {

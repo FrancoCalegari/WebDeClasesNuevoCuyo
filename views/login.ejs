@@ -1,16 +1,27 @@
 <%- include("layouts/head") %>
 <%- include("layouts/header") %>
 
-<h2>Login</h2>
+<main class="login-shell">
+  <section class="login-card">
+    <p class="eyebrow">Panel</p>
+    <h2>Iniciar sesión</h2>
+    <p class="login-subtitle">Accede para administrar años, materias, clases y recursos.</p>
 
-<form action="/login" method="POST">
-    <input type="text" name="username" placeholder="Usuario" required>
-    <input type="password" name="password" placeholder="Contraseña" required>
-    <button type="submit">Ingresar</button>
-</form>
-
-<% if (error) { %>
-  <p style="color:red"><%= error %></p>
-<% } %>
+    <form class="login-form" action="/login" method="POST">
+      <label class="login-field">
+        <span>Usuario</span>
+        <input type="text" name="username" placeholder="Tu usuario" required>
+      </label>
+      <label class="login-field">
+        <span>Contraseña</span>
+        <input type="password" name="password" placeholder="********" required>
+      </label>
+      <% if (error) { %>
+        <p class="login-error"><%= error %></p>
+      <% } %>
+      <button class="btn" type="submit">Ingresar</button>
+    </form>
+  </section>
+</main>
 
 <%- include("layouts/footer") %>
