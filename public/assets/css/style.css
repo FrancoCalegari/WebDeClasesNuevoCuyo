@@ -249,6 +249,7 @@ nav button:hover {
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
   position: relative;
   overflow: hidden;
+  z-index: 0;
 }
 
 .clase::before {
@@ -258,6 +259,7 @@ nav button:hover {
   background: linear-gradient(120deg, rgba(31, 76, 255, 0.08), transparent 60%);
   opacity: 0;
   transition: var(--transition);
+  pointer-events: none;
 }
 
 .clase:hover::before {
