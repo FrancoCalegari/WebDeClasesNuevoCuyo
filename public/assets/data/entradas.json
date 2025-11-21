@@ -1,7 +1,14 @@
 [
   {
     "anio": "Primer Año",
-    "materias": []
+    "materias": [
+      {
+        "nombre": "adrian",
+        "slug": "adrianprueba",
+        "ruta": "routes/primer-ano/adrianprueba/index.html",
+        "activo": true
+      }
+    ]
   },
   {
     "anio": "Segundo Año",
@@ -10,6 +17,12 @@
         "nombre": "Matematica Discreta",
         "slug": "matediscreta",
         "ruta": "routes/segundo-ano/matediscreta/index.html",
+        "activo": true
+      },
+      {
+        "nombre": "Analisis Matematico",
+        "slug": "analisis-matematico",
+        "ruta": "routes/segundo-ano/analisis-matematico/index.html",
         "activo": true
       }
     ]

@@ -70,5 +70,15 @@
       "video": "https://youtu.be/LXPselTJPsU",
       "resumen": ""
     }
-  ]
+  ],
+  "routes/primer-ano/adrianprueba/index.html": [
+    {
+      "numero": "1",
+      "tema": "prueba",
+      "fecha": "8/11/2025",
+      "video": "https://www.test.com",
+      "resumen": ""
+    }
+  ],
+  "routes/segundo-ano/analisis-matematico/index.html": []
 }
