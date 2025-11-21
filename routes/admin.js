@@ -1,4 +1,7 @@
 const express = require("express");
+const fs = require("fs");
+const path = require("path");
+const multer = require("multer");
 const {
   getEntradas,
   saveEntradas,
@@ -16,6 +19,8 @@ const router = express.Router();
 
 router.use(isAuthenticated);
 
+const PUBLIC_DIR = path.join(__dirname, "..", "public");
+
 const getContext = (entradaIndex, materiaIndex) => {
   const entradas = getEntradas();
   const entrada = entradas?.[entradaIndex];
@@ -23,6 +28,57 @@ const getContext = (entradaIndex, materiaIndex) => {
 
   return { entradas, entrada, materia };
 };
+
+const ensureDirectory = (targetPath) => {
+  if (!fs.existsSync(targetPath)) {
+    fs.mkdirSync(targetPath, { recursive: true });
+  }
+};
+
+const sanitizeFileName = (fileName = "") => {
+  const clean = fileName
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-zA-Z0-9._-]/g, "");
+  return clean || `adjunto-${Date.now()}`;
+};
+
+const buildAdjuntoUrl = (absolutePath) => {
+  const relative = path.relative(PUBLIC_DIR, absolutePath).replace(/\\/g, "/");
+  return `/${relative}`;
+};
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    try {
+      const { entradaIndex, materiaIndex } = req.params;
+      const { entrada, materia } = getContext(Number(entradaIndex), Number(materiaIndex));
+
+      if (!entrada || !materia) {
+        return cb(new Error("Materia no encontrada"));
+      }
+
+      const bundle = resolveMateriaBundle({
+        ruta: materia.ruta,
+        slug: materia.slug,
+        anio: entrada.anio,
+      });
+      const targetDir = path.join(bundle.folderPath, "adjuntos");
+
+      ensureDirectory(targetDir);
+
+      return cb(null, targetDir);
+    } catch (error) {
+      return cb(error);
+    }
+  },
+  filename: (req, file, cb) => {
+    const safeName = sanitizeFileName(file.originalname);
+    cb(null, `${Date.now()}-${safeName}`);
+  },
+});
+
+const upload = multer({ storage });
 
 router.get("/", (req, res) => {
   const entradas = getEntradas();
@@ -251,18 +307,25 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/clase/:claseIndex/dele
   res.redirect("/admin");
 });
 
-router.post("/entrada/:entradaIndex/materia/:materiaIndex/adjunto/add", (req, res) => {
+router.post("/entrada/:entradaIndex/materia/:materiaIndex/adjunto/add", upload.single("archivo"), (req, res) => {
   const { entradaIndex, materiaIndex } = req.params;
-  const { entradas, entrada, materia } = getContext(Number(entradaIndex), Number(materiaIndex));
+  const { entrada, materia } = getContext(Number(entradaIndex), Number(materiaIndex));
 
   if (!entrada || !materia) {
     return res.redirect("/admin");
   }
 
   const adjuntos = readMateriaAdjuntos(materia.ruta);
+  const nombre = req.body.nombre?.trim() || req.file?.originalname || "Archivo sin título";
+  let ruta = req.body.ruta?.trim() || "";
+
+  if (req.file?.path) {
+    ruta = buildAdjuntoUrl(req.file.path);
+  }
+
   adjuntos.push({
-    nombre: req.body.nombre?.trim() || "Archivo sin título",
-    ruta: req.body.ruta?.trim() || "#",
+    nombre,
+    ruta: ruta || "#",
   });
 
   syncMateriaStaticFiles(materia, {
@@ -274,7 +337,7 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/adjunto/add", (req, re
   res.redirect("/admin");
 });
 
-router.post("/entrada/:entradaIndex/materia/:materiaIndex/adjunto/:adjuntoIndex/edit", (req, res) => {
+router.post("/entrada/:entradaIndex/materia/:materiaIndex/adjunto/:adjuntoIndex/edit", upload.single("archivo"), (req, res) => {
   const { entradaIndex, materiaIndex, adjuntoIndex } = req.params;
   const { entradas, entrada, materia } = getContext(Number(entradaIndex), Number(materiaIndex));
 
@@ -286,9 +349,14 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/adjunto/:adjuntoIndex/
   const index = Number(adjuntoIndex);
 
   if (!Number.isNaN(index) && adjuntos?.[index]) {
+    const nombreSubido = req.file?.originalname;
+    const rutaSubida = req.file?.path ? buildAdjuntoUrl(req.file.path) : "";
+    const formNombre = req.body.nombre?.trim();
+    const formRuta = req.body.ruta?.trim();
+
     adjuntos[index] = {
-      nombre: req.body.nombre?.trim() || adjuntos[index].nombre,
-      ruta: req.body.ruta?.trim() || adjuntos[index].ruta,
+      nombre: formNombre || nombreSubido || adjuntos[index].nombre,
+      ruta: rutaSubida || formRuta || adjuntos[index].ruta,
     };
 
     syncMateriaStaticFiles(materia, {

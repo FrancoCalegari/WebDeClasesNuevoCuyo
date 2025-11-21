@@ -229,15 +229,16 @@ function openPopup(entradaIndex, materiaIndex, nombre) {
       html += "</div>";
 
       html += "<div class='section-group'>";
-      html += "<div class='section-head'><h4>Recursos</h4><p>Adjunta PDFs, DOCs u otros enlaces de apoyo.</p></div>";
+      html += "<div class='section-head'><h4>Recursos</h4><p>Adjunta PDFs, DOCs u otros enlaces de apoyo. Si subes un archivo se guarda en la carpeta del año y materia.</p></div>";
 
       if (adjuntos.length) {
         html += "<ul class='list list--spaced'>";
         adjuntos.forEach((a, i) => {
           html += `<li class="list-item">
-            <form class="inline-form" action="/admin/entrada/${entradaIndex}/materia/${materiaIndex}/adjunto/${i}/edit" method="POST">
-              <input class="input" type="text" name="nombre" value="${escapeAttr(a.nombre)}" placeholder="Nombre archivo" required/>
-              <input class="input" type="text" name="ruta" value="${escapeAttr(a.ruta)}" placeholder="Ruta archivo" required/>
+            <form class="inline-form" action="/admin/entrada/${entradaIndex}/materia/${materiaIndex}/adjunto/${i}/edit" method="POST" enctype="multipart/form-data">
+              <input class="input" type="text" name="nombre" value="${escapeAttr(a.nombre)}" placeholder="Nombre archivo" />
+              <input class="input" type="text" name="ruta" value="${escapeAttr(a.ruta)}" placeholder="URL del archivo (opcional si subes uno)" />
+              <input class="input" type="file" name="archivo" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.zip,.jpg,.jpeg,.png"/>
               <button class="btn btn--primary btn--sm" type="submit">Guardar</button>
             </form>
             <form class="inline-form" action="/admin/entrada/${entradaIndex}/materia/${materiaIndex}/adjunto/${i}/delete" method="POST">
@@ -250,10 +251,13 @@ function openPopup(entradaIndex, materiaIndex, nombre) {
         html += "<p class='empty-state'>No hay adjuntos cargados.</p>";
       }
 
-      html += `<form class="stacked-form stacked-form--popup" action="/admin/entrada/${entradaIndex}/materia/${materiaIndex}/adjunto/add" method="POST">
+      html += `<form class="stacked-form stacked-form--popup" action="/admin/entrada/${entradaIndex}/materia/${materiaIndex}/adjunto/add" method="POST" enctype="multipart/form-data">
         <div class="form-row">
-          <input class="input" type="text" name="nombre" placeholder="Nombre archivo" required/>
-          <input class="input" type="text" name="ruta" placeholder="Ruta archivo (ej: /assets/docs/apunte.pdf)" required/>
+          <input class="input" type="text" name="nombre" placeholder="Nombre archivo" />
+          <input class="input" type="text" name="ruta" placeholder="URL (opcional si subes archivo)" />
+        </div>
+        <div class="form-row">
+          <input class="input" type="file" name="archivo" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.zip,.jpg,.jpeg,.png"/>
         </div>
         <button class="btn btn--secondary" type="submit">Agregar adjunto</button>
       </form>`;
