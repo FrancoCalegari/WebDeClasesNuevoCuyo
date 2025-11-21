@@ -1,6 +1,36 @@
+<%
+  const pageTitle =
+    (typeof title !== "undefined" && title) || "Resumenes T.N.C";
+  const pageDesc =
+    (typeof description !== "undefined" && description) ||
+    "Plataforma de resúmenes, clases y recursos de la Tecnicatura Nuevo Cuyo.";
+  const metaImage =
+    (typeof image !== "undefined" && image) || "/assets/imgs/linkphoto.png";
+  const faviconPath = "/assets/imgs/logo.png";
+%>
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title><%= title || "Resumenes T.N.C" %></title>
+  <title><%= pageTitle %></title>
+  <meta name="description" content="<%= pageDesc %>"/>
+  <meta name="theme-color" content="#1f4cff"/>
+
+  <link rel="icon" type="image/png" href="<%= faviconPath %>" sizes="32x32"/>
+  <link rel="icon" type="image/png" href="<%= faviconPath %>" sizes="96x96"/>
+  <link rel="shortcut icon" href="<%= faviconPath %>"/>
+  <link rel="apple-touch-icon" href="<%= faviconPath %>"/>
+
+  <meta property="og:type" content="website"/>
+  <meta property="og:locale" content="es_ES"/>
+  <meta property="og:site_name" content="Resumenes T.N.C"/>
+  <meta property="og:title" content="<%= pageTitle %>"/>
+  <meta property="og:description" content="<%= pageDesc %>"/>
+  <meta property="og:image" content="<%= metaImage %>"/>
+
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="<%= pageTitle %>"/>
+  <meta name="twitter:description" content="<%= pageDesc %>"/>
+  <meta name="twitter:image" content="<%= metaImage %>"/>
+
   <link rel="stylesheet" href="/assets/css/style.css"/>
 </head>
