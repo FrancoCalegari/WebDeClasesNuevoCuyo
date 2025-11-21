@@ -38,91 +38,12 @@
             + Nueva entrada
           </button>
         </div>
-
-        <% if (entradas && entradas.length > 0) { %>
-          <% entradas.forEach((anio, idx) => { %>
-            <article class="year-block">
-              <div class="year-block__header">
-                <div>
-                  <p class="eyebrow">Año</p>
-                  <h3><%= anio.anio || "Sin año" %></h3>
-                </div>
-                <span class="chip"><%= (anio.materias && anio.materias.length) || 0 %> materias</span>
-              </div>
-
-              <% if (anio.materias && anio.materias.length) { %>
-                <div class="table-wrapper">
-                  <table class="admin-table">
-                    <thead>
-                      <tr>
-                        <th>Materia</th>
-                        <th>Ruta</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <% anio.materias.forEach((m, i) => { %>
-                        <tr>
-                          <td data-title="Materia">
-                            <strong><%= m.nombre %></strong>
-                          </td>
-                          <td data-title="Ruta">
-                            <code><%= m.ruta %></code>
-                          </td>
-                          <td data-title="Estado">
-                            <span class="chip <%= m.activo ? 'chip--success' : 'chip--muted' %>"><%= m.activo ? "Activo" : "Inactivo" %></span>
-                          </td>
-                          <td data-title="Acciones">
-                            <div class="actions-group">
-                              <form class="inline-form" action="/admin/entrada/<%= idx %>/materia/<%= i %>/edit" method="POST">
-                                <input class="input" type="text" name="nombre" value="<%= m.nombre %>" placeholder="Nombre" required/>
-                                <input class="input" type="text" name="slug" value="<%= materiaSlug(m) %>" placeholder="Slug (opcional)"/>
-                                <select class="input" name="activo">
-                                  <option value="true" <%= m.activo ? "selected" : "" %>>Activo</option>
-                                  <option value="false" <%= !m.activo ? "selected" : "" %>>Inactivo</option>
-                                </select>
-                                <button class="btn btn--primary btn--sm" type="submit">Guardar</button>
-                              </form>
-                              <form class="inline-form" action="/admin/entrada/<%= idx %>/materia/<%= i %>/delete" method="POST">
-                                <button class="btn btn--danger btn--sm" type="submit">Eliminar</button>
-                              </form>
-                              <button class="btn btn--outline btn--sm" type="button" onclick="openPopup(<%= idx %>, <%= i %>, '<%= m.nombre %>')">
-                                Propiedades
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      <% }) %>
-                    </tbody>
-                  </table>
-                </div>
-              <% } else { %>
-                <p class="empty-state">Aún no hay materias en este año.</p>
-              <% } %>
-
-              <form class="stacked-form" action="/admin/entrada/<%= idx %>/materia/add" method="POST">
-                <div class="form-row">
-                  <input class="input" type="text" name="nombre" placeholder="Nombre de la materia" required/>
-                  <input class="input" type="text" name="slug" placeholder="Slug (opcional)"/>
-                  <select class="input" name="activo">
-                    <option value="true">Activa</option>
-                    <option value="false">Inactiva</option>
-                  </select>
-                  <button class="btn btn--secondary" type="submit">Agregar materia</button>
-                </div>
-              </form>
-            </article>
-          <% }) %>
-        <% } else { %>
+        <div id="entries-body">
           <div class="empty-state-card">
-            <h3>No hay entradas disponibles</h3>
-            <p>Comienza creando una nueva entrada para añadir materias, clases y recursos.</p>
-            <button class="btn btn--primary" type="button" onclick="document.getElementById('create-entry').scrollIntoView({ behavior: 'smooth' });">
-              Crear la primera entrada
-            </button>
+            <h3>Cargando entradas...</h3>
+            <p>Si no aparece nada, verifica tu conexión.</p>
           </div>
-        <% } %>
+        </div>
       </section>
 
       <section class="admin-card" id="create-entry">
@@ -132,7 +53,7 @@
             <h2>Crear año y materia base</h2>
           </div>
         </div>
-        <form class="stacked-form stacked-form--two" action="/admin/entrada/add" method="POST">
+        <form class="stacked-form stacked-form--two" action="/admin/entrada/add" method="POST" data-action="add-entrada">
           <label class="form-field">
             <span>Año</span>
             <input class="input" type="text" name="anio" placeholder="2025" required />
@@ -160,127 +81,15 @@
           <p class="eyebrow">Personaliza la materia</p>
           <h3 id="popup-title"></h3>
         </div>
-        <button class="icon-button" type="button" aria-label="Cerrar" onclick="closePopup()">✕</button>
+        <button class="icon-button" type="button" aria-label="Cerrar" data-action="close-popup">✕</button>
       </div>
       <div id="popup-content" class="modal-content"></div>
     </div>
   </div>
 
   <script>
-const popup = document.getElementById("popup");
-const popupContent = document.getElementById("popup-content");
-const VISIBLE_CLASS = "is-visible";
-
-function escapeAttr(value = "") {
-  return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/"/g, "&quot;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-}
-
-function openPopup(entradaIndex, materiaIndex, nombre) {
-  document.getElementById("popup-title").innerText = "Editar " + nombre;
-
-  fetch(`/admin/entrada/${entradaIndex}/materia/${materiaIndex}/propiedades`)
-    .then(res => res.json())
-    .then(data => {
-      const clases = data.clases || [];
-      const adjuntos = data.adjuntos || [];
-
-      let html = "<div class='section-group'>";
-      html += "<div class='section-head'><h4>Clases</h4><p>Gestiona los encuentros y enlaces al material.</p></div>";
-
-      if (clases.length) {
-        html += "<ul class='list list--spaced'>";
-        clases.forEach((c, i) => {
-          html += `<li class="list-item">
-            <form class="inline-form" action="/admin/entrada/${entradaIndex}/materia/${materiaIndex}/clase/${i}/edit" method="POST">
-              <input class="input" type="text" name="numero" value="${escapeAttr(c.numero || i + 1)}" placeholder="Número" required/>
-              <input class="input" type="text" name="tema" value="${escapeAttr(c.tema || "")}" placeholder="Tema" required/>
-              <input class="input" type="text" name="fecha" value="${escapeAttr(c.fecha || "")}" placeholder="Fecha"/>
-              <input class="input" type="url" name="video" value="${escapeAttr(c.video || "")}" placeholder="Link del video" required/>
-              <input class="input" type="url" name="resumen" value="${escapeAttr(c.resumen || "")}" placeholder="Resumen (opcional)"/>
-              <button class="btn btn--primary btn--sm" type="submit">Guardar</button>
-            </form>
-            <form class="inline-form" action="/admin/entrada/${entradaIndex}/materia/${materiaIndex}/clase/${i}/delete" method="POST">
-              <button class="btn btn--danger btn--sm" type="submit">Eliminar</button>
-            </form>
-          </li>`;
-        });
-        html += "</ul>";
-      } else {
-        html += "<p class='empty-state'>No hay clases cargadas.</p>";
-      }
-
-      html += `<form class="stacked-form stacked-form--popup" action="/admin/entrada/${entradaIndex}/materia/${materiaIndex}/clase/add" method="POST">
-        <div class="form-row">
-          <input class="input" type="text" name="numero" placeholder="Número de clase" />
-          <input class="input" type="text" name="tema" placeholder="Tema de la clase" required/>
-          <input class="input" type="text" name="fecha" placeholder="Fecha de la clase" />
-        </div>
-        <div class="form-row">
-          <input class="input" type="url" name="video" placeholder="URL del video" required/>
-          <input class="input" type="url" name="resumen" placeholder="URL del resumen (opcional)" />
-        </div>
-        <button class="btn btn--secondary" type="submit">Agregar clase</button>
-      </form>`;
-
-      html += "</div>";
-
-      html += "<div class='section-group'>";
-      html += "<div class='section-head'><h4>Recursos</h4><p>Adjunta PDFs, DOCs u otros enlaces de apoyo. Si subes un archivo se guarda en la carpeta del año y materia.</p></div>";
-
-      if (adjuntos.length) {
-        html += "<ul class='list list--spaced'>";
-        adjuntos.forEach((a, i) => {
-          html += `<li class="list-item">
-            <form class="inline-form" action="/admin/entrada/${entradaIndex}/materia/${materiaIndex}/adjunto/${i}/edit" method="POST" enctype="multipart/form-data">
-              <input class="input" type="text" name="nombre" value="${escapeAttr(a.nombre)}" placeholder="Nombre archivo" />
-              <input class="input" type="text" name="ruta" value="${escapeAttr(a.ruta)}" placeholder="URL del archivo (opcional si subes uno)" />
-              <input class="input" type="file" name="archivo" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.zip,.jpg,.jpeg,.png"/>
-              <button class="btn btn--primary btn--sm" type="submit">Guardar</button>
-            </form>
-            <form class="inline-form" action="/admin/entrada/${entradaIndex}/materia/${materiaIndex}/adjunto/${i}/delete" method="POST">
-              <button class="btn btn--danger btn--sm" type="submit">Eliminar</button>
-            </form>
-          </li>`;
-        });
-        html += "</ul>";
-      } else {
-        html += "<p class='empty-state'>No hay adjuntos cargados.</p>";
-      }
-
-      html += `<form class="stacked-form stacked-form--popup" action="/admin/entrada/${entradaIndex}/materia/${materiaIndex}/adjunto/add" method="POST" enctype="multipart/form-data">
-        <div class="form-row">
-          <input class="input" type="text" name="nombre" placeholder="Nombre archivo" />
-          <input class="input" type="text" name="ruta" placeholder="URL (opcional si subes archivo)" />
-        </div>
-        <div class="form-row">
-          <input class="input" type="file" name="archivo" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.zip,.jpg,.jpeg,.png"/>
-        </div>
-        <button class="btn btn--secondary" type="submit">Agregar adjunto</button>
-      </form>`;
-
-      html += "</div>";
-
-      popupContent.innerHTML = html;
-      popup.classList.add(VISIBLE_CLASS);
-      popup.setAttribute("aria-hidden", "false");
-    });
-}
-
-function closePopup() {
-  popup.classList.remove(VISIBLE_CLASS);
-  popup.setAttribute("aria-hidden", "true");
-  popupContent.innerHTML = "";
-}
-
-popup.addEventListener("click", (event) => {
-  if (event.target === popup) {
-    closePopup();
-  }
-});
+    window.__ENTRADAS__ = <%- JSON.stringify(entradas || []) %>;
   </script>
+  <script src="/assets/js/adminfront.js"></script>
 </body>
 </html>

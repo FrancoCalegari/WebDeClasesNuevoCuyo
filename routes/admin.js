@@ -21,6 +21,24 @@ router.use(isAuthenticated);
 
 const PUBLIC_DIR = path.join(__dirname, "..", "public");
 
+const wantsJson = (req) =>
+  req.headers["x-requested-with"] === "fetch" ||
+  (req.get("accept") || "").includes("application/json");
+
+const successResponse = (req, res, payload = {}) => {
+  if (wantsJson(req)) {
+    return res.json({ ok: true, ...payload });
+  }
+  return res.redirect("/admin");
+};
+
+const errorResponse = (req, res, message = "Operación inválida", status = 400) => {
+  if (wantsJson(req)) {
+    return res.status(status).json({ ok: false, message });
+  }
+  return res.redirect("/admin");
+};
+
 const getContext = (entradaIndex, materiaIndex) => {
   const entradas = getEntradas();
   const entrada = entradas?.[entradaIndex];
@@ -90,18 +108,32 @@ router.get("/", (req, res) => {
   });
 });
 
+router.get("/data", (req, res) => {
+  const entradas = getEntradas();
+  return res.json({ ok: true, entradas });
+});
+
 router.get("/entrada/:entradaIndex/materia/:materiaIndex/propiedades", (req, res) => {
   const { entradaIndex, materiaIndex } = req.params;
   const { entrada, materia } = getContext(Number(entradaIndex), Number(materiaIndex));
 
   if (!entrada || !materia) {
-    return res.status(404).json({ clases: [], adjuntos: [] });
+    return res.status(404).json({ ok: false, clases: [], adjuntos: [] });
   }
 
   const clases = readMateriaClases(materia.ruta);
   const adjuntos = readMateriaAdjuntos(materia.ruta);
 
-  return res.json({ clases, adjuntos });
+  return res.json({
+    ok: true,
+    clases,
+    adjuntos,
+    materia: {
+      nombre: materia.nombre,
+      slug: materia.slug,
+      ruta: materia.ruta,
+    },
+  });
 });
 
 router.post("/entrada/:entradaIndex/materia/:materiaIndex/edit", (req, res) => {
@@ -109,7 +141,7 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/edit", (req, res) => {
   const { entradas, entrada, materia } = getContext(Number(entradaIndex), Number(materiaIndex));
 
   if (!entrada || !materia) {
-    return res.redirect("/admin");
+    return errorResponse(req, res, "Materia no encontrada", 404);
   }
 
   const nuevoNombre = req.body.nombre?.trim();
@@ -150,7 +182,13 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/edit", (req, res) => {
     saveEntradas(entradas);
   }
 
-  res.redirect("/admin");
+  return successResponse(req, res, {
+    entradaIndex: Number(entradaIndex),
+    materiaIndex: Number(materiaIndex),
+    materia,
+    entrada,
+    entradas,
+  });
 });
 
 router.post("/entrada/:entradaIndex/materia/:materiaIndex/delete", (req, res) => {
@@ -167,7 +205,10 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/delete", (req, res) =>
     saveEntradas(entradas);
   }
 
-  res.redirect("/admin");
+  return successResponse(req, res, {
+    entradaIndex: Number(entradaIndex),
+    entradas,
+  });
 });
 
 router.post("/entrada/:entradaIndex/materia/add", (req, res) => {
@@ -175,7 +216,7 @@ router.post("/entrada/:entradaIndex/materia/add", (req, res) => {
   const { entradas, entrada } = getContext(Number(entradaIndex));
 
   if (!entrada) {
-    return res.redirect("/admin");
+    return errorResponse(req, res, "Entrada no encontrada", 404);
   }
 
   const nombre = req.body.nombre?.trim();
@@ -183,7 +224,7 @@ router.post("/entrada/:entradaIndex/materia/add", (req, res) => {
   const activo = req.body.activo !== "false";
 
   if (!nombre) {
-    return res.redirect("/admin");
+    return errorResponse(req, res, "Nombre requerido");
   }
 
   const slug = slugPersonalizado
@@ -197,7 +238,12 @@ router.post("/entrada/:entradaIndex/materia/add", (req, res) => {
   syncMateriaStaticFiles(nuevaMateria, { anio: entrada.anio, clases: [], adjuntos: [] });
   saveEntradas(entradas);
 
-  res.redirect("/admin");
+  return successResponse(req, res, {
+    entradaIndex: Number(entradaIndex),
+    materiaIndex: entrada.materias.length - 1,
+    materia: nuevaMateria,
+    entradas,
+  });
 });
 
 router.post("/entrada/add", (req, res) => {
@@ -205,7 +251,7 @@ router.post("/entrada/add", (req, res) => {
   const anio = (anioRaw || year || "").trim();
 
   if (!anio || !nombre) {
-    return res.redirect("/admin");
+    return errorResponse(req, res, "Año y nombre son requeridos");
   }
 
   const entradas = getEntradas();
@@ -225,7 +271,9 @@ router.post("/entrada/add", (req, res) => {
   syncMateriaStaticFiles(nuevaMateria, { anio, clases: [], adjuntos: [] });
   saveEntradas(entradas);
 
-  res.redirect("/admin");
+  return successResponse(req, res, {
+    entradas,
+  });
 });
 
 router.post("/entrada/:entradaIndex/materia/:materiaIndex/clase/add", (req, res) => {
@@ -233,7 +281,7 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/clase/add", (req, res)
   const { entradas, entrada, materia } = getContext(Number(entradaIndex), Number(materiaIndex));
 
   if (!entrada || !materia) {
-    return res.redirect("/admin");
+    return errorResponse(req, res, "Materia no encontrada", 404);
   }
 
   const clases = readMateriaClases(materia.ruta);
@@ -251,7 +299,7 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/clase/add", (req, res)
     adjuntos: readMateriaAdjuntos(materia.ruta),
   });
 
-  res.redirect("/admin");
+  return successResponse(req, res, { clases });
 });
 
 router.post("/entrada/:entradaIndex/materia/:materiaIndex/clase/:claseIndex/edit", (req, res) => {
@@ -259,7 +307,7 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/clase/:claseIndex/edit
   const { entradas, entrada, materia } = getContext(Number(entradaIndex), Number(materiaIndex));
 
   if (!entrada || !materia) {
-    return res.redirect("/admin");
+    return errorResponse(req, res, "Materia no encontrada", 404);
   }
 
   const clases = readMateriaClases(materia.ruta);
@@ -281,7 +329,7 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/clase/:claseIndex/edit
     });
   }
 
-  res.redirect("/admin");
+  return successResponse(req, res, { clases });
 });
 
 router.post("/entrada/:entradaIndex/materia/:materiaIndex/clase/:claseIndex/delete", (req, res) => {
@@ -289,7 +337,7 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/clase/:claseIndex/dele
   const { entradas, entrada, materia } = getContext(Number(entradaIndex), Number(materiaIndex));
 
   if (!entrada || !materia) {
-    return res.redirect("/admin");
+    return errorResponse(req, res, "Materia no encontrada", 404);
   }
 
   const clases = readMateriaClases(materia.ruta);
@@ -304,7 +352,7 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/clase/:claseIndex/dele
     });
   }
 
-  res.redirect("/admin");
+  return successResponse(req, res, { clases });
 });
 
 router.post("/entrada/:entradaIndex/materia/:materiaIndex/adjunto/add", upload.single("archivo"), (req, res) => {
@@ -312,7 +360,7 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/adjunto/add", upload.s
   const { entrada, materia } = getContext(Number(entradaIndex), Number(materiaIndex));
 
   if (!entrada || !materia) {
-    return res.redirect("/admin");
+    return errorResponse(req, res, "Materia no encontrada", 404);
   }
 
   const adjuntos = readMateriaAdjuntos(materia.ruta);
@@ -334,7 +382,7 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/adjunto/add", upload.s
     adjuntos,
   });
 
-  res.redirect("/admin");
+  return successResponse(req, res, { adjuntos });
 });
 
 router.post("/entrada/:entradaIndex/materia/:materiaIndex/adjunto/:adjuntoIndex/edit", upload.single("archivo"), (req, res) => {
@@ -342,7 +390,7 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/adjunto/:adjuntoIndex/
   const { entradas, entrada, materia } = getContext(Number(entradaIndex), Number(materiaIndex));
 
   if (!entrada || !materia) {
-    return res.redirect("/admin");
+    return errorResponse(req, res, "Materia no encontrada", 404);
   }
 
   const adjuntos = readMateriaAdjuntos(materia.ruta);
@@ -366,7 +414,7 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/adjunto/:adjuntoIndex/
     });
   }
 
-  res.redirect("/admin");
+  return successResponse(req, res, { adjuntos });
 });
 
 router.post("/entrada/:entradaIndex/materia/:materiaIndex/adjunto/:adjuntoIndex/delete", (req, res) => {
@@ -374,7 +422,7 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/adjunto/:adjuntoIndex/
   const { entradas, entrada, materia } = getContext(Number(entradaIndex), Number(materiaIndex));
 
   if (!entrada || !materia) {
-    return res.redirect("/admin");
+    return errorResponse(req, res, "Materia no encontrada", 404);
   }
 
   const adjuntos = readMateriaAdjuntos(materia.ruta);
@@ -389,7 +437,7 @@ router.post("/entrada/:entradaIndex/materia/:materiaIndex/adjunto/:adjuntoIndex/
     });
   }
 
-  res.redirect("/admin");
+  return successResponse(req, res, { adjuntos });
 });
 
 module.exports = router;

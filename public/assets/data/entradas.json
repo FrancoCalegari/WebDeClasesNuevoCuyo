@@ -1,14 +1,7 @@
 [
   {
     "anio": "Primer Año",
-    "materias": [
-      {
-        "nombre": "adrian",
-        "slug": "adrianprueba",
-        "ruta": "routes/primer-ano/adrianprueba/index.html",
-        "activo": true
-      }
-    ]
+    "materias": []
   },
   {
     "anio": "Segundo Año",
