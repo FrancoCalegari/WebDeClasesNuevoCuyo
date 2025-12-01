@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Comunicaciones y redes - Resumenes T.N.C</title>
+  <meta name="description" content="Clases, resúmenes y archivos de Comunicaciones y redes - Tecnicatura Nuevo Cuyo."/>
+  <meta name="theme-color" content="#1f4cff"/>
+  <link rel="icon" type="image/png" href="/assets/imgs/logo.png"/>
+  <link rel="shortcut icon" href="/assets/imgs/logo.png"/>
+  <link rel="apple-touch-icon" href="/assets/imgs/logo.png"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:locale" content="es_ES"/>
+  <meta property="og:site_name" content="Resumenes T.N.C"/>
+  <meta property="og:title" content="Comunicaciones y redes - Resumenes T.N.C"/>
+  <meta property="og:description" content="Clases, resúmenes y archivos de Comunicaciones y redes del año Segundo Año."/>
+  <meta property="og:image" content="/assets/imgs/linkphoto.png"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Comunicaciones y redes - Resumenes T.N.C"/>
+  <meta name="twitter:description" content="Recursos y resúmenes de Comunicaciones y redes - Tecnicatura Nuevo Cuyo."/>
+  <meta name="twitter:image" content="/assets/imgs/linkphoto.png"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">Resumenes T.N.C</div>
+      <div class="nav-buttons">
+        <button onclick="window.location.href='/'">Inicio</button>
+        <button onclick="window.location.href='/#carreras'">Carrera</button>
+        <button onclick="window.location.href='/#info-creator'">Acerca</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>Clases de Comunicaciones y redes</h2>
+      <p class="materia-year">Año: Segundo Año</p>
+      <div id="lista-clases" class="clases-container">
+        <!-- Las clases se cargarán aquí dinámicamente -->
+      </div>
+    </section>
+
+    <section id="recursos">
+      <h2>Resúmenes y Archivos del Profesor</h2>
+      <div id="lista-adjuntos" class="app-folder">
+        <!-- Archivos adjuntos se cargarán dinámicamente -->
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Resumenes T.N.C - Desarrollo de Software alpha(v1)</p>
+    <a href="https://github.com/FrancoCalegari/WebDeClasesNuevoCuyo" target="_blank">GitRepo</a>
+  </footer>
+
+  <script>
+    const materiaRuta = "c-y-r";
+
+    // Cargar clases desde JSON
+    fetch(`clases-${materiaRuta}.json`)
+      .then(res => res.json())
+      .then(clases => {
+        const contenedor = document.getElementById("lista-clases");
+        clases.forEach(clase => {
+          const div = document.createElement("div");
+          div.classList.add("clase", "hidden");
+          div.innerHTML = `
+            <h2>Clase ${clase.numero}</h2>
+            <p><strong>Tema:</strong> ${clase.tema}</p>
+            <p><strong>Fecha:</strong> ${clase.fecha}</p>
+            <p><a href="${clase.video}" target="_blank">Ver video</a></p>
+            ${clase.resumen ? `<p><a href="${clase.resumen}" target="_blank">Ver resumen</a></p>` : ""}
+          `;
+          contenedor.appendChild(div);
+        });
+
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.remove("hidden");
+              entry.target.classList.add("fade-in");
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.clase').forEach(el => observer.observe(el));
+      })
+      .catch(err => console.error("Error al cargar las clases:", err));
+
+    // Cargar archivos adjuntos desde JSON
+    fetch(`adjuntos-${materiaRuta}.json`)
+      .then(res => res.json())
+      .then(adjuntos => {
+        const contenedor = document.getElementById("lista-adjuntos");
+        adjuntos.forEach(a => {
+          const nombre = a.nombre || "";
+          const extension = nombre.toLowerCase().match(/\.(pdf|docx?|)$/)?.[1] || "";
+          let icon = "doclogo.png";
+          let linkClass = "doc";
+          
+          if (extension === "pdf") {
+            icon = "pdf.png";
+            linkClass = "pdf";
+          } else if (extension === "doc" || extension === "docx") {
+            icon = "doclogo.png";
+            linkClass = "doc";
+          }
+
+          const aEl = document.createElement("a");
+          aEl.href = a.ruta;
+          aEl.target = "_blank";
+          aEl.className = `app-link ${linkClass}`;
+          aEl.innerHTML = `
+            <div class="app-logo">
+              <img src="../../../assets/imgs/archiveLogos/${icon}" alt="icono"/>
+            </div>
+            <div class="app-name">
+              <h3>${nombre}</h3>
+            </div>
+          `;
+          contenedor.appendChild(aEl);
+        });
+      })
+      .catch(err => console.error("Error al cargar los adjuntos:", err));
+  </script>
+</body>
+</html>

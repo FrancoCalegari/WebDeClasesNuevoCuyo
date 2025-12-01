@@ -17,6 +17,36 @@
         "slug": "analisis-matematico",
         "ruta": "routes/segundo-ano/analisis-matematico/index.html",
         "activo": true
+      },
+      {
+        "nombre": "Modelado De Software (IA)",
+        "slug": "modelado",
+        "ruta": "routes/segundo-ano/modelado/index.html",
+        "activo": true
+      },
+      {
+        "nombre": "Bases de Datos 2",
+        "slug": "basedatos",
+        "ruta": "routes/segundo-ano/basedatos/index.html",
+        "activo": true
+      },
+      {
+        "nombre": "Sistemas Operativos",
+        "slug": "s-o",
+        "ruta": "routes/segundo-ano/s-o/index.html",
+        "activo": true
+      },
+      {
+        "nombre": "Comunicaciones y redes",
+        "slug": "c-y-r",
+        "ruta": "routes/segundo-ano/c-y-r/index.html",
+        "activo": true
+      },
+      {
+        "nombre": "Programación 2",
+        "slug": "programacion-2",
+        "ruta": "routes/segundo-ano/programacion-2/index.html",
+        "activo": true
       }
     ]
   },
