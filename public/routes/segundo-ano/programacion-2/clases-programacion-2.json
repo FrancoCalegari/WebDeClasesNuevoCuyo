@@ -19,5 +19,110 @@
     "fecha": "25-04-2025",
     "video": "https://youtu.be/VBr2bwJwoWs?si=eV3-9ol8184gTKqH",
     "resumen": ""
+  },
+  {
+    "numero": "4",
+    "tema": "Funciones y listas",
+    "fecha": "9-5-2025",
+    "video": "https://youtu.be/32tC3pJHOcI?si=s4a7orfhcHmhd4Dx",
+    "resumen": ""
+  },
+  {
+    "numero": "5",
+    "tema": "Estilos y Eventos Tkinter",
+    "fecha": "16-5",
+    "video": "https://youtu.be/qNZU-tZOg3Q",
+    "resumen": ""
+  },
+  {
+    "numero": "6",
+    "tema": "Intentamos hacer un sistema de venta",
+    "fecha": "23-5-2025",
+    "video": "https://youtu.be/SvDmd0vZXGY?si=7ohYibjsPwPTZ13C&utm_source=MTQxZ",
+    "resumen": ""
+  },
+  {
+    "numero": "7",
+    "tema": "Repaso de Parcial 1 de programacion 2",
+    "fecha": "30-5-2025",
+    "video": "https://youtu.be/hKf9TE5Kn4Q?si=riHH_SfbStAHS32z&utm_source=MTQxZ",
+    "resumen": ""
+  },
+  {
+    "numero": "8",
+    "tema": "Repaso parcial y funciones",
+    "fecha": "6-6-2025",
+    "video": "https://youtu.be/URp2poTJ6l0?si=xHT4wa3ctgYL9Xw1&utm_source=MTQxZ",
+    "resumen": ""
+  },
+  {
+    "numero": "9",
+    "tema": "Validaciones y funciones para base de datos",
+    "fecha": "13-6-2025",
+    "video": "https://youtu.be/Nkm_-Kdj2Zc?si=WkH0w9XywvL6Fxhx&utm_source=MTQxZ",
+    "resumen": ""
+  },
+  {
+    "numero": "10",
+    "tema": "Vuelta del receso invernal Refuerzo de Funciones y verificaciones",
+    "fecha": "22-8-2025",
+    "video": "https://youtu.be/VkI14J2jqQ8?si=ztIZ6Ptiroa2le5P",
+    "resumen": ""
+  },
+  {
+    "numero": "11",
+    "tema": "Metodologia CRUD repaso y visualizando el proyecto final/parcial 2",
+    "fecha": "29-8-2025",
+    "video": "https://youtu.be/oEYIDb3KV98?si=oC0kNtJ46ZxGtelC",
+    "resumen": ""
+  },
+  {
+    "numero": "12",
+    "tema": "Mejorando Proyecto sistema de venta",
+    "fecha": "5-9-2025",
+    "video": "https://youtu.be/M_liIsvURzo?si=DlKbDNz93zG6bScf",
+    "resumen": ""
+  },
+  {
+    "numero": "13",
+    "tema": "Mostrando prototipo de proyecto y mejoras",
+    "fecha": "12-09-2025",
+    "video": "https://youtu.be/oMmGfS3mPrQ",
+    "resumen": ""
+  },
+  {
+    "numero": "14",
+    "tema": "tkinter mejoras de proyectos",
+    "fecha": "26-9-2025",
+    "video": "https://youtu.be/nEtTFgBuf0U?si=_QjFTGNaQqUoA3rT",
+    "resumen": ""
+  },
+  {
+    "numero": "15",
+    "tema": "Termiando el año parte 1",
+    "fecha": "3-10-2025",
+    "video": "https://youtu.be/rYuZNXdj5cY?si=mrVtK7o1rxcho0LS",
+    "resumen": ""
+  },
+  {
+    "numero": "16",
+    "tema": "Termiando el año parte 2",
+    "fecha": "17-10-2025",
+    "video": "https://youtu.be/PlBOz4aZmmI?si=AZZvu5BMv-cRKinV",
+    "resumen": ""
+  },
+  {
+    "numero": "17",
+    "tema": "Termiando el año parte 3",
+    "fecha": "24-10-2025",
+    "video": "https://youtu.be/aKQPo-m5bKY?si=b4MRuYGsJPMGMw3y",
+    "resumen": ""
+  },
+  {
+    "numero": "18",
+    "tema": "Termiando el año parte 4 fin teorico",
+    "fecha": "31-10-2025",
+    "video": "https://youtu.be/0TgtOj-MXGA?si=IU4Bjhos7ds4nbtE",
+    "resumen": ""
   }
 ]
