@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "numero": "1",
+    "tema": "introduccion",
+    "fecha": "21-03-2025",
+    "video": "https://youtu.be/hKWAkgK-rAA",
+    "resumen": ""
+  },
+  {
+    "numero": "2",
+    "tema": "Ultimo Repaso de primer año",
+    "fecha": "11-04-2025",
+    "video": "https://youtu.be/BEOQeaN0F2k",
+    "resumen": ""
+  },
+  {
+    "numero": "3",
+    "tema": "Ejercitacion Base de datos",
+    "fecha": "25-04-2025",
+    "video": "https://youtu.be/VBr2bwJwoWs?si=eV3-9ol8184gTKqH",
+    "resumen": ""
+  }
+]
